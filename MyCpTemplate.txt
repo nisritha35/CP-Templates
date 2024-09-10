@@ -1,0 +1,144 @@
+/* Author: D.Nisritha Reddy */
+#include<bits/stdc++.h>
+#define int long long 
+#define pb push_back
+#define ndl "\n"
+#define yes cout<<"Yes\n"
+#define no cout<<"No\n"
+#define mod (int)(1e9 + 7)
+#define F first
+#define S second
+#define vi vector<int>
+#define vc vector<char>
+#define vpi vector<pair<int,int>>
+#define pi pair<int,int>
+#define mi map<int, int>
+#define miv map<int,vector<int>>
+#define maxEle(a) *max_element(a.begin(), a.end())
+#define minEle(a) *min_element(a.begin(), a.end())
+#define sortAll(a) sort(a.begin(), a.end())
+#define revAll(a) reverse(a.begin(), a.end())
+#define sumAll(a) accumulate(a.begin(), a.end(), 0LL)
+using namespace std;
+
+template<class T>
+void inp(vector<T>&a){ for(auto &x : a)cin>>x; }
+
+template<class T>
+void inp(vector<vector<T>>&a){
+    int n = a.size();
+    for(int i = 0; i<n; i++){
+       inp(a[i]);
+    }
+}
+
+template<class T>
+void println(T x){ cout<<x<<"\n";}
+
+template<class T>
+void print(T x){ cout<<x<<" ";}
+
+template<class T>
+void print(vector<T>&a){
+    for(auto &x: a)cout<<x<<" ";
+    cout<<ndl;
+}
+
+template<class T>
+void print(vector<pair<T,T>>&a){
+    int n = a.size();
+    for(int i = 0; i<n; i++)print(a[i]);
+}
+
+template<class T>
+void print(vector<T>&a, int sz){
+    for(int i = 0; i<sz; i++){
+        cout << a[i]<<" ";
+    }
+    cout << "\n";
+}
+
+template<class T>
+void print(set<T>&st){
+    for(auto &it : st){
+        print(it);
+    }
+    cout <<"\n";
+}
+
+template<class T>
+void print(multiset<T>&st){
+    for(auto &it : st){
+        print(it);
+    }
+    cout << "\n";
+}
+
+template<class T>
+void print(vector<vector<T>>&a){
+    int n = a.size(); 
+    for(int i =0 ; i<n; i++){
+        print(a[i]);
+    }
+}
+
+template<class T>
+void print(pair<T,T>&a){
+    int n = a.size(); 
+    for(int i =0 ; i<n; i++){
+        cout << a[i].F <<" "<<a[i].S<<"\n";
+    }
+}
+
+template<class T, class U>
+void print(map<T,U>&mp){
+    
+    for(auto it = mp.begin(); it!=mp.end(); it++){
+        
+        cout << it -> first<<":";
+        print(it->second);
+    }
+}
+
+template<class T>
+void frequency(vector<T>&a, vi& fre){
+    for(auto &it: a){
+        fre[it]++;
+    }
+}
+
+template<class T>
+void frequency(vector<T>&a, map<T, int>&fre){
+    for(auto &it: a){
+        fre[it]++;
+    }
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+void solve(){
+    
+    
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+signed main(){
+    
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+ 
+    int t = 1; cin>>t;
+    while(t--){
+        solve();
+    }
+}

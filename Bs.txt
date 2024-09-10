@@ -1,0 +1,103 @@
+/* Author: D. Nisritha Reddy */
+
+#include<bits/stdc++.h>
+#define int long long 
+#define pb push_back
+#define ndl "\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define mod (int)(1e9 + 7)
+#define F first
+#define S second
+#define vi vector<int>
+#define vpi vector<pair<int,int>>
+#define pi pair<int,int>
+#define mi map<int, int>
+#define miv map<int,vector<int>>
+
+using namespace std;
+
+template<class T>
+void inp(vector<T>&a){ for(auto &x : a)cin>>x; }
+
+template<class T>
+void print(vector<T>&a){
+    for(auto &x: a)cout<<x<<" ";
+    cout<<ndl;
+}
+
+template<class T>
+void print(T x){
+    cout<<x<<" ";
+}
+
+template<class T>
+void println(T x){
+    cout<<x<<"\n";
+}
+
+
+/***************************************************************************/
+
+int lb(vi &a, int l, int h, int key){
+    int ans = h+1;
+    while(l<=h){
+        int mid = (l+h)>>1;
+        if(a[mid]>=key){
+            ans = mid;
+            h = mid-1;
+        }
+        else{
+            l = mid + 1;
+        }
+    }
+    return ans;
+}
+
+int ub(vi &a, int l, int h, int key){
+    int ans = h+1;
+    while(l<=h){
+        int mid = (l+h)>>1;
+        if(a[mid]>key){
+            ans = mid;
+            h = mid-1;
+        }
+        else{
+            l = mid + 1;
+        }
+    }
+    return ans;
+}
+
+
+int lesEq(vi &a, int l, int h, int key){
+    int ans = -1;
+    while(l<=h){
+        int mid = (l+h)>>1;
+        if(a[mid]<=key){
+            ans = mid;
+            l = mid + 1;
+        }
+        else{
+            h = mid - 1;
+        }
+    }
+    return ans;
+}
+
+void solve(){
+ 
+}
+
+
+signed main(){
+
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t; cin>>t;
+    while(t--){
+        solve();
+    }
+}

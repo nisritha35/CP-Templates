@@ -1,0 +1,43 @@
+const int fact_sz = 300005;
+
+int fact[fact_sz];
+
+void factorial(){
+    fact[0] = fact[1] = 1;
+    for(ll i = 2; i<fact_sz; i++){
+        fact[i] = (fact[i-1]*i)%mod;
+    }
+}
+
+int power(int x, int y){
+    if(y==0)return 1;
+    int p = power(x, y/2);
+    if(y&1)return (((p*p)%mod)*x)%mod;
+    return (p*p)%mod;
+}
+int modIn(int x){
+    return power(x,mod-2);
+}
+
+int ncr(int n, int r){
+    if(n<r)return 0;
+    if(r==0)return 1;
+    return (((fact[n]*modIn(fact[n-r]))%mod)*modIn(fact[r]))%mod;
+}
+
+int npr(int n, int r, int k){
+        long long int res = 1, ans = 1;
+        for(int i =n; i>r ;i--){
+            res = res*i;
+            if(k!=0){
+               if(res%k==0) res/=k;
+               else ans = ans*k;
+               k--;
+            }
+            if(ans!=1 && res%ans==0){
+                res/=ans; ans = 1;
+            }
+    }
+    return res;
+}
+    

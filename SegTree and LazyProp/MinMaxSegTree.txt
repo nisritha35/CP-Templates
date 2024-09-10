@@ -1,0 +1,73 @@
+/* Min-Max SegTree with Point update */
+
+class SegTree{
+public:
+vi maxSeg, minSeg, a;
+int n;
+
+SegTree(vi &a){
+    this->a = a;
+    this->n = a.size();
+    maxSeg.resize(4*n);
+    minSeg.resize(4*n);
+    build(0,0,n-1);
+}
+
+void build(int idx, int low, int high){
+    if(low==high){
+        maxSeg[idx] = minSeg[idx] = a[low];
+        return;
+    }
+    int mid = (low+high)/2;
+    build(idx*2 + 1, low, mid);
+    build(idx*2 + 2, mid + 1, high);
+    maxSeg[idx] = max(maxSeg[idx*2 + 1], maxSeg[idx*2+2]);
+    minSeg[idx] = min(minSeg[idx*2 + 1], minSeg[idx*2 + 2]);
+}
+
+int minQuery(int idx, int low, int high, int l, int r){
+    if(l <= low && r >= high)return minSeg[idx];
+    if(l > high || r < low)return INT_MAX;
+    int mid = (low+high)/2;
+    int left = minQuery(idx*2 + 1, low, mid, l, r);
+    int right = minQuery(idx*2 + 2, mid + 1, high, l, r);
+    return min(left, right);
+}
+
+int maxQuery(int idx, int low, int high, int l, int r){
+    if(l <= low && r >= high)return maxSeg[idx];
+    if(l > high || r < low)return INT_MIN;
+    int mid = (low+high)/2;
+    int left = maxQuery(idx*2 + 1, low, mid, l, r);
+    int right = maxQuery(idx*2 + 2, mid + 1, high, l, r);
+    return max(left, right);
+}
+
+int maxQuery(int l, int r){
+    return maxQuery(0, 0, n-1, l, r);
+}
+
+int minQuery(int l, int r){
+    return minQuery(0, 0, n-1, l, r);
+}
+
+void pointUpdate(int idx, int low, int high, int k){    
+    if(k < low || k > high){
+        return;
+    }
+    if(low==high){
+        minSeg[idx] = INT_MAX;
+        maxSeg[idx] = INT_MIN;
+        return;
+    }
+    int mid = (low + high)/2;
+    pointUpdate(idx*2 + 1, low, mid, k);
+    pointUpdate(idx*2 + 2, mid + 1, high, k);
+    minSeg[idx] = min(minSeg[idx*2+1], minSeg[idx*2+2]);
+    maxSeg[idx] = max(maxSeg[idx*2+1], maxSeg[idx*2+2]);
+}
+
+void pointUpdate(int k){
+    return pointUpdate(0,0,n-1,k);
+}
+};

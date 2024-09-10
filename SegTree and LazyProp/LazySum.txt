@@ -1,0 +1,66 @@
+class Lazy{
+    public:
+    int n;
+    vi v, tree, lazy;
+
+    void build(int idx, int low, int high){   
+        if(low==high){
+            tree[idx] = v[low]; return;
+        }
+        int mid = (low+high)>> 1;
+        build(2*idx+1, low, mid);
+        build(2*idx+2, mid + 1, high);
+        tree[idx] = tree[2*idx + 1] + tree[2*idx + 2];    
+    }
+
+    Lazy(vi &v){   
+        this->v = v;
+        this-> n = v.size();
+        lazy.resize(4*n,0);
+        tree.resize(4*n,0);
+        this->build(0,0,n-1);
+    }
+
+    int query(int idx, int low, int high, int l, int r){
+       
+        //propogate pending lazy updates downwards
+        if(lazy[idx]){
+            tree[idx] += (high-low+1)*(lazy[idx]);
+            if(low!=high){
+                lazy[2*idx + 1] += lazy[idx];
+                lazy[2*idx + 2] += lazy[idx];
+            }
+            lazy[idx] = 0;
+        }
+        if(l > high || r < low){ return 0; }
+        if(l<=low && r>=high){ return tree[idx]; }
+        int mid = (low + high) >>1;   
+        int left = query(2*idx + 1, low, mid, l, r);
+        int right = query(2*idx + 2, mid+1, high, l, r);
+        return left + right;    
+    }
+    
+    void update(int idx, int low, int high, int l, int r, int add){
+        if(lazy[idx]){
+            tree[idx] += (high-low+1)*(lazy[idx]);
+            if(low!=high){
+                lazy[2*idx + 1] += lazy[idx];
+                lazy[2*idx + 2] += lazy[idx];
+            }
+            lazy[idx] = 0;
+        }
+        if(l > high || r < low || low>high){ return; }
+        else if(l<=low && r>=high){   
+            tree[idx] += (high-low + 1)*add;
+            if(low!=high){
+                lazy[2*idx + 1]+= add;
+                lazy[2*idx + 2]+= add;
+            }
+            return;
+        }   
+        int mid = (low + high) >> 1;
+        update(2*idx + 1, low, mid, l, r, add);
+        update(2*idx + 2, mid+1, high, l, r, add);
+        tree[idx] = tree[2*idx + 1] + tree[2*idx + 2];   
+    }
+};

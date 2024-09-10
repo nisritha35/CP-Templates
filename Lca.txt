@@ -1,0 +1,252 @@
+/* Author: D.Nisritha Reddy */
+#include<bits/stdc++.h>
+#define int long long 
+#define pb push_back
+#define ndl "\n"
+#define yes cout<<"YES\n"
+#define no cout<<"NO\n"
+#define mod (int)(1e9 + 7)
+#define F first
+#define S second
+#define vi vector<int>
+#define vc vector<char>
+#define vpi vector<pair<int,int>>
+#define pi pair<int,int>
+#define mi map<int, int>
+#define miv map<int,vector<int>>
+#define maxEle(a) *max_element(a.begin(), a.end())
+#define minEle(a) *min_element(a.begin(), a.end())
+#define sortAll(a) sort(a.begin(), a.end())
+#define revAll(a) rev(a.begin(), a.end())
+#define sumAll(a) accumulate(a.begin(), a.end(), 0LL)
+using namespace std;
+
+template<class T>
+void inp(vector<T>&a){ for(auto &x : a)cin>>x; }
+
+template<class T>
+void inp(vector<vector<T>>&a){
+    int n = a.size();
+    for(int i = 0; i<n; i++){
+       inp(a[i]);
+    }
+}
+
+template<class T>
+void println(T x){ cout<<x<<"\n";}
+
+template<class T>
+void print(T x){ cout<<x<<" ";}
+
+template<class T>
+void print(vector<T>&a){
+    for(auto &x: a)cout<<x<<" ";
+    cout<<ndl;
+}
+
+template<class T>
+void print(vector<T>&a, int sz){
+    for(int i = 0; i<sz; i++){
+        cout << a[i]<<" ";
+    }
+    cout << "\n";
+}
+
+template<class T>
+void print(set<T>&st){
+    for(auto &it : st){
+        print(it);
+    }
+    cout <<"\n";
+}
+
+template<class T>
+void print(multiset<T>&st){
+    for(auto &it : st){
+        print(it);
+    }
+    cout << "\n";
+}
+
+template<class T>
+void print(vector<vector<T>>&a){
+    int n = a.size(); 
+    for(int i =0 ; i<n; i++){
+        print(a[i]);
+    }
+}
+
+template<class T, class U>
+void print(map<T,U>&mp){
+    
+    for(auto it = mp.begin(); it!=mp.end(); it++){
+        
+        cout << it -> first<<":";
+        print(it->second);
+    }
+}
+
+template<class T>
+void frequency(vector<T>&a, vi& fre){
+    for(auto &it: a){
+        fre[it]++;
+    }
+}
+
+template<class T>
+void frequency(vector<T>&a, map<T, int>&fre){
+    for(auto &it: a){
+        fre[it]++;
+    }
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/* LCA using BINARY LIFTING */
+ 
+int n, q;
+vector<vi>parent;
+vector<vi>children;
+vi depth;
+
+// parent[i][lvl] stores the (1 << lvl)th parent of node i 
+
+void compute(){
+    
+    for(int lvl = 1; lvl <= 20 ; lvl++){
+        
+       for(int i = 1; i<=n; i++){
+        
+           if(parent[i][lvl-1]==-1)parent[i][lvl] = -1;
+           
+           else parent[i][lvl] = parent[parent[i][lvl-1]][lvl-1];
+        
+       }    
+    }
+    
+}
+ 
+int lift(int node, int lvl){
+    
+        int res = node;
+        int pos = 0;
+        
+        while(lvl!=0){
+            
+            if(lvl&1){
+                res = parent[res][pos];
+            }
+            
+            if(res==-1)break;
+            
+            pos++; lvl >>= 1; 
+ 
+        }
+    
+        return res;
+}
+
+int lca(int u, int v){
+    
+    if(u==v)return u;
+    
+    for(int i = 20; i>=0; i--){
+        
+        if(parent[u][i]!=parent[v][i]){
+            u = parent[u][i];
+            v = parent[v][i];
+        }
+    }
+    
+    return parent[u][0];
+}
+
+ 
+void solve(){
+ 
+    cin >> n >> q;
+    
+    parent.resize(n+1, vi(21,-1));
+    children.resize(n+1);
+    
+    parent[1][0] = -1;
+    
+    for(int i = 2; i <= n; i++){
+        
+        int x; cin>>x;
+        parent[i][0] = x;
+        children[x].pb(i);
+        
+    }
+    
+    depth.resize(n+1,0);
+    
+    queue<int>que;
+    
+    depth[1] = 0;
+    
+    que.push(1);
+    
+    // compute depth of each node 
+    
+    while(!que.empty()){
+        
+        int node = que.front();
+        que.pop();
+        
+        for(auto it : children[node]){
+            
+            depth[it] = depth[node] + 1;
+            que.push(it);
+            
+        }
+        
+    }
+    
+    
+    // compute powers of 2 parents of each node 
+    
+    compute();
+  
+    while(q--){
+        
+        int node1, node2 ; cin >> node1 >> node2;
+        
+        int mini , maxi;
+        
+        if(depth[node1] < depth[node2]){
+            mini = node1; maxi = node2;
+        }
+        else{
+            mini = node2; maxi = node1;
+        }
+       
+        int lvl = depth[maxi] - depth[mini]; 
+  
+        int res = lift(maxi, lvl); 
+  
+        cout << lca(mini, res)<<"\n";
+        
+    }
+ 
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+signed main(){
+    
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+ 
+    int t = 1; // cin>>t;
+    while(t--){
+        solve();
+    }
+}

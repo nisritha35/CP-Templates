@@ -1,0 +1,45 @@
+// Sum SegTree Point Update - Add val at point pt in point update
+
+class SegTree{
+    public:
+    int n;
+    vi a, seg;
+    SegTree(vi &a){
+        this->a = a;
+        this->n = a.size();
+        seg.resize(4*n, 0);
+        build(0,0,n-1);
+    }
+    void build(int idx, int low, int high){
+        if(low==high){
+            seg[idx] = a[low]; return;
+        }
+        int mid = (low + high) >> 1;
+        build(idx*2 + 1, low, mid);
+        build(idx*2 + 2, mid + 1, high);
+        seg[idx] = seg[idx*2+1] + seg[idx*2 + 2];
+    }
+    int query(int idx, int low, int high, int l, int r){
+        if((l <= low) && (r >= high)) return seg[idx];
+        if((l > r) || (l > high)  || (r < low)){
+            return 0;
+        }
+        int mid = (low + high) >> 1;
+        int left = query(idx*2 + 1, low, mid, l, r);
+        int right = query(idx*2 + 2, mid + 1, high, l, r);
+        return left + right;
+    }
+    /* adds val at pt */
+    void pointUpdate(int idx, int low, int high, int pt, int val){
+        if((low > pt) || (high < pt))return;
+        if(low == high){
+            seg[idx]+=val; return;
+        }
+        int mid = ( low + high ) >> 1;
+        pointUpdate(idx*2 + 1, low, mid, pt, val);
+        pointUpdate(idx*2 + 2, mid + 1, high, pt, val);
+        seg[idx] = seg[idx*2 + 1] + seg[idx*2 + 2];
+    }
+    void pointUpdate(int pt, int val){ pointUpdate(0, 0, n-1, pt, val); }
+    int query(int l, int r){ return query(0, 0, n-1, l, r); }
+};
