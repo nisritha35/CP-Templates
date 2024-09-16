@@ -1,0 +1,65 @@
+// Author: D. Nisritha Reddy
+// Character Trie 
+
+class Trie{
+
+    public:
+    
+    Trie* child[26];
+    int count; // count of strings with prefix until that node 
+    int endCount; // count of strings ending at that node
+
+    Trie(){
+        for(int i = 0; i<26; i++)child[i] = nullptr;
+        count = 0;
+        endCount = 0;
+    }
+
+    void insert(string &word){
+        Trie* root = this;
+        for(char &ch: word){
+            if(root->child[ch-'a']==nullptr){
+                root->child[ch-'a']=new Trie();
+            }
+            root = root->child[ch-'a'];
+            root->count++;
+        }
+        root->endCount++;
+    }
+
+    int countWordsEqualTo(string &word){
+        Trie* root = this;
+        for(char &ch: word){
+            if(root->child[ch-'a']==nullptr){
+                return 0;
+            }
+            root = root->child[ch-'a'];
+        }
+        return root->endCount;
+    }
+
+    int countWordsStartingWith(string &word){
+        Trie* root = this;
+        for(char &ch: word){
+            if(root->child[ch-'a']==nullptr){
+                return 0;
+            }
+            root = root->child[ch-'a'];
+        }
+        return root->count;
+    }
+
+    void erase(string &word){
+        Trie* root = this;
+        for(char &ch: word){
+            if(root->child[ch-'a']->count==1){
+                delete root->child[ch-'a'];
+                root->child[ch-'a'] = nullptr;
+                return;
+            }
+            root->child[ch-'a']->count--;
+            root = root->child[ch-'a'];
+        }
+        root->endCount--;
+    }
+};
