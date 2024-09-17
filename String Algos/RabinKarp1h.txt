@@ -1,0 +1,50 @@
+class RabinKarp{
+    
+    public:
+    int mod1 = (int)(1e9 + 7);
+    int p1 = 31;
+
+    int power(int x, int y, int mod){
+        if(y==0)return 1;
+        int p = power(x, y/2, mod);
+        if(y&1)return (x*((p*p)%mod))%mod;
+        return (p*p)%mod;
+    }
+
+    int hash(string &s, int i = 0, int j = -1){
+         
+        int n = s.length();
+        if(j==-1)j = n-1;
+        long long hash1 = 0, hash2 = 0;
+        for(int idx = i ; idx <= j ; idx++){
+            hash1 = ((hash1*p1)%mod1 + (s[idx]-'a' + 1))%mod1;
+        }
+        return hash1;
+    }
+
+    // Returns Prefix hashes of string 
+
+    vector<int> prefHash(string &s, int i = 0, int j = -1){
+        vector<int>res;
+        int n = s.length();
+        if(j==-1)j = n-1;
+        long long hash1 = 0;
+        for(int idx = i ; idx <= j; idx++){
+            hash1 = ((hash1*p1)%mod1 + (s[idx]-'a' + 1))%mod1;
+            res.push_back(hash1);
+        }
+        return res;
+    }
+    
+    // Given prefix hash of string s, returns the hash value of s[i:j]
+
+    int rangeHash(vector<int>&pre, int i = 0, int j = -1){
+           int n = pre.size();
+           if(j==-1)j = n-1;
+           if(i==0)return pre[j];
+           long long sub1 = ( (pre[i-1]*1ll)*power(p1, (j-i+1),mod1) )%mod1;
+           int res = (pre[j] - sub1 + mod1)%mod1;
+           return res;
+    }
+
+};
