@@ -1,3 +1,6 @@
+// Author: D. Nisritha Reddy
+// Rabin Karp class based implementation using one hash value
+
 class RabinKarp{
     
     public:

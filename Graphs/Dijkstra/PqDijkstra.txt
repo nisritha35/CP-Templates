@@ -1,0 +1,24 @@
+// Author: D. Nisritha Reddy
+// TC: O(E*(log(V))) 
+// SC: O(E + V) -> O(E) for pq and O(V) for dist array
+
+vector<int> dijkstra(int V, vector<vector<int>> adj[], int S){
+
+     priority_queue< pair<int,int>, vector<pair<int,int>>,greater< pair<int,int> > >pq;
+     
+     vector<int>dist(V,1000000);
+     dist[S] = 0; pq.push({0,S});
+     
+     while(!pq.empty()){
+         int node = pq.top().second;
+         int wt = pq.top().first;
+         pq.pop(); if(dist[node] < wt)continue;
+         for(auto it : adj[node]){
+             if(wt + it[1] < dist[it[0]]){
+                  dist[it[0]] = wt + it[1];
+                  pq.push({wt + it[1] , it[0]});
+             }
+         }
+     }
+     return dist;
+}
